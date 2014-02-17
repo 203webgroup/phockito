@@ -143,7 +143,11 @@ class Phockito {
 			'args' => $args
 		));
 
-		// Look up any stubbed responses
+        if (!method_exists($class, $method) && '__phockito_parent_construct' !== $method) {
+            user_error("Can't call or mock non-existent method $method", E_USER_ERROR);
+        }
+
+        // Look up any stubbed responses
 		if (isset(self::$_responses[$instance][$method])) {
 			// Find the first one that matches the called-with arguments
 			foreach (self::$_responses[$instance][$method] as $i => &$matcher) {

@@ -11,6 +11,10 @@ class PhockitoSpiesTest_MockMe {
 	function Baz($response) { return $response; }
 }
 
+class PhockitoSpiesTest_MockMeNoCtor {
+    function Foo() { throw new Exception('Base method Foo was called'); }
+}
+
 class PhockitoSpiesTest extends PHPUnit_Framework_TestCase {
 
 	/** Test stubbing **/
@@ -45,4 +49,10 @@ class PhockitoSpiesTest extends PHPUnit_Framework_TestCase {
 		$this->assertFalse($spy->constructor_arg);
 	}
 
+    function testCanSpyOnClassWithoutConstructor() {
+        $spy = Phockito::spy('PhockitoSpiesTest_MockMeNoCtor');
+        Phockito::when($spy)->Foo()->return(1);
+
+        $this->assertEquals($spy->Foo(), 1);
+    }
 }

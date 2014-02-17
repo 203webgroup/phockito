@@ -255,12 +255,23 @@ class PhockitoTest extends PHPUnit_Framework_TestCase {
 		$mock->Foo();
 	}
 
-	function testCanSpecifyReturnValueForUndefinedFunction() {
-		$mock = Phockito::mock('PhockitoTest_MockMe');
-		Phockito::when($mock->Quux())->return('Quux');
+    /**
+     * @expectedException PHPUnit_Framework_Error
+     * @expectedExceptionCode E_USER_ERROR
+     */
+    function testCannotMockNonExistingMethod() {
+        $mock = Phockito::mock('PhockitoTest_MockMe');
+        Phockito::when($mock->NonExistingMethod())->return(4711);
+    }
 
-		$this->assertEquals('Quux', $mock->Quux());
-	}
+    /**
+     * @expectedException PHPUnit_Framework_Error
+     * @expectedExceptionCode E_USER_ERROR
+     */
+    function testCannotCallNonExistingMethod() {
+        $mock = Phockito::mock('PhockitoTest_MockMe');
+        $mock->NonExistingMethod();
+    }
 
 
 	/**
@@ -444,4 +455,12 @@ class PhockitoTest extends PHPUnit_Framework_TestCase {
 		Phockito::mock('PhockitoTest_Final');
 	}
 
+
+    /**
+     * @expectedException PHPUnit_Framework_Error
+     * @expectedExceptionCode E_USER_ERROR
+     */
+    function testCannotMockNonExistingClass() {
+        Phockito::mock('NonExistingClass');
+    }
 }

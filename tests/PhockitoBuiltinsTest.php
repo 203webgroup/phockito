@@ -10,8 +10,7 @@ class PhockitoBuiltinsTest extends PHPUnit_Framework_TestCase {
 	function testCanCreateBasicMockClassOfBuiltin() {
 		$mock = Phockito::mock('SoapClient');
 		$this->assertInstanceOf('SoapClient', $mock);
-		$this->assertNull($mock->Foo());
-		$this->assertNull($mock->Bar());
+		$this->assertNull($mock->__getLastRequest());
 	}
 
 }

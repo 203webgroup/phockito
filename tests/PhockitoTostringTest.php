@@ -31,22 +31,5 @@ class PhockitoToStringTest extends PHPUnit_Framework_TestCase {
 		Phockito::when($mock->__toString())->return('NewReturnValue');
 		$this->assertEquals('NewReturnValue', ''.$mock);
 	}
-
-	function testCanMockAndOverrideUndefinedToString() {
-		$mock = Phockito::mock('PhockitoTostringTest_MockWithoutToString');
-
-		$this->assertEquals('', ''.$mock);
-
-		Phockito::when($mock->__toString())->return('NewReturnValue');
-		$this->assertEquals('NewReturnValue', ''.$mock);
-	}
-
-	function testCanSpyAndOverrideUndefinedToString() {
-		$mock = Phockito::spy('PhockitoTostringTest_MockWithoutToString');
-
-		Phockito::when($mock)->__toString()->return('NewReturnValue');
-		$this->assertEquals('NewReturnValue', ''.$mock);
-	}
-
 }
 

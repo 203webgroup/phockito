@@ -463,11 +463,11 @@ EOT;
 	 */
 	static function when($arg = null) {
 		if ($arg instanceof Phockito_MockMarker) {
-			return new Phockito_WhenBuilder($arg->__phockito_instanceid);
+            return new Phockito_WhenBuilder($arg->__phockito_instanceid, $arg->__phockito_class);
 		}
 		else {
 			$method = array_shift(self::$_call_list);
-			return new Phockito_WhenBuilder($method['instance'], $method['method'], $method['args']);
+            return new Phockito_WhenBuilder($method['instance'], $method['class'], $method['method'], $method['args']);
 		}
 	}
 
@@ -540,6 +540,7 @@ interface Phockito_MockMarker {
 class Phockito_WhenBuilder {
 
 	protected $instance;
+    protected $class;
 	protected $method;
 	protected $i;
 
@@ -556,14 +557,22 @@ class Phockito_WhenBuilder {
 		if (!isset(Phockito::$_responses[$instance][$method])) Phockito::$_responses[$instance][$method] = array();
 
 		$this->i = count(Phockito::$_responses[$instance][$method]);
-		Phockito::$_responses[$instance][$method][] = array(
-			'args' => $args,
-			'steps' => array()
-		);
-	}
+        foreach (Phockito::$_responses[$instance][$method] as $i => &$matcher) {
+            if (Phockito::_arguments_match($this->class, $method, $matcher['args'], $args)) {
+                $this->i = $i;
+                break;
+            }
+        }
 
-	function __construct($instance, $method = null, $args = null) {
-		$this->instance = $instance;
+        Phockito::$_responses[$instance][$method][$this->i] = array(
+            'args' => $args,
+            'steps' => array()
+        );
+    }
+
+    function __construct($instance, $class, $method = null, $args = null) {
+        $this->instance = $instance;
+        $this->class = $class;
 		if ($method) $this->__phockito_setMethod($method, $args);
 	}
 

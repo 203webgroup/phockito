@@ -197,6 +197,33 @@ class PhockitoTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals(2, $mock->Foo());
     }
 
+    /**
+     * This test case demonstrates a defect in the framework when using the "standard" API.
+     * If the behavior for a method is set to return a mock, it is not possible to change that behavior with the standard
+     * API. It is possible with the alternate API though, see other test case.
+     */
+    function testCanNotOverWriteReturnValueOfFunctionThatReturnsAMock() {
+        $mock = Phockito::mock('PhockitoTest_MockInterface');
+        $unexpected = Phockito::mock('PhockitoTest_MockInterface');
+
+        Phockito::when($mock->Foo())->thenReturn($unexpected);
+        Phockito::when($mock->Foo())->thenReturn(4711);
+
+        $actual = $mock->Foo();
+
+        $this->assertEquals($unexpected, $actual);
+    }
+
+    function testCanOverWriteReturnValueOfFunctionReturningAMockWithAlternateAPI() {
+        $mock = Phockito::mock('PhockitoTest_MockInterface');
+        $returnedMoc = Phockito::mock('PhockitoTest_MockInterface');
+
+        Phockito::when($mock)->Foo()->thenReturn($returnedMoc);
+        Phockito::when($mock)->Foo()->thenReturn(4711);
+
+        $this->assertEquals(4711, $mock->Foo());
+    }
+
     function testNoSpecForOptionalArgumentMatchesDefault() {
 		$mock = Phockito::mock('PhockitoTest_FooHasIntegerDefaultArgument');
 		

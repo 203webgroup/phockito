@@ -554,7 +554,11 @@ class Phockito_WhenBuilder {
 	 * Store the method and args we're stubbing
 	 */
 	private function __phockito_setMethod($method, $args) {
-		$instance = $this->instance;
+        if (!method_exists($this->class, $method)) {
+            user_error("Can't mock non-existent method $method", E_USER_ERROR);
+        }
+
+        $instance = $this->instance;
 		$this->method = $method;
 
 		if (!isset(Phockito::$_responses[$instance])) Phockito::$_responses[$instance] = array();

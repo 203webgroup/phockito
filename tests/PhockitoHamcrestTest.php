@@ -19,8 +19,8 @@ class PhockitoHamcrestTest extends PHPUnit_Framework_TestCase {
 	function testCanStubByType() {
 		$mock = Phockito::mock('PhockitoHamcrestTest_MockMe');
 		
-		Phockito::when($mock->Foo(intValue(), stringValue()))->return('int,string');
-		Phockito::when($mock->Foo(stringValue(), stringValue()))->return('string,string');
+		Phockito::when($mock)->Foo(intValue(), stringValue())->return('int,string');
+		Phockito::when($mock)->Foo(stringValue(), stringValue())->return('string,string');
 		
 		$this->assertNull($mock->Foo(1, 1));		
 		$this->assertEquals($mock->Foo(1, 'a'), 'int,string');

@@ -142,13 +142,6 @@ class PhockitoTest extends PHPUnit_Framework_TestCase {
 	function testCanSpecifySingleReturnValue() {
 		$mock = Phockito::mock('PhockitoTest_MockMe');
 
-		Phockito::when($mock->Foo())->return(1);
-		$this->assertEquals($mock->Foo(), 1);
-	}
-
-	function testCanSpecifySingleReturnValueWithAlternateAPI(){
-		$mock = Phockito::mock('PhockitoTest_MockMe');
-
 		Phockito::when($mock)->Foo()->return(1);
 		$this->assertEquals($mock->Foo(), 1);
 	}
@@ -156,7 +149,7 @@ class PhockitoTest extends PHPUnit_Framework_TestCase {
 	function testCanSpecifyMultipleReturnValues() {
 		$mock = Phockito::mock('PhockitoTest_MockMe');
 
-		Phockito::when($mock->Foo())->return(1)->thenReturn(2);
+		Phockito::when($mock)->Foo()->return(1)->thenReturn(2);
 		$this->assertEquals($mock->Foo(), 1);
 		$this->assertEquals($mock->Foo(), 2);
 	}
@@ -164,8 +157,8 @@ class PhockitoTest extends PHPUnit_Framework_TestCase {
 	function testCanSpecifyDifferentReturnsValuesForDifferentArgs() {
 		$mock = Phockito::mock('PhockitoTest_MockMe');
 
-		Phockito::when($mock->Bar('a'))->return(1);
-		Phockito::when($mock->Bar('b'))->return(2);
+		Phockito::when($mock)->Bar('a')->return(1);
+		Phockito::when($mock)->Bar('b')->return(2);
 
 		$this->assertEquals($mock->Bar('a'), 1);
 		$this->assertEquals($mock->Bar('b'), 2);
@@ -173,10 +166,10 @@ class PhockitoTest extends PHPUnit_Framework_TestCase {
 
 	function testMocksHaveIndependentReturnValueLists() {
 		$mock1 = Phockito::mock('PhockitoTest_MockMe');
-		Phockito::when($mock1->Foo())->return(1);
+		Phockito::when($mock1)->Foo()->return(1);
 
 		$mock2 = Phockito::mock('PhockitoTest_MockMe');
-		Phockito::when($mock2->Foo())->return(2);
+		Phockito::when($mock2)->Foo()->return(2);
 
 		$this->assertEquals($mock1->Foo(), 1);
 		$this->assertEquals($mock1->Foo(), 1);
@@ -188,9 +181,9 @@ class PhockitoTest extends PHPUnit_Framework_TestCase {
     function testCanOverWriteReturnValue() {
         $mock = Phockito::mock('PhockitoTest_MockMe');
 
-        Phockito::when($mock->Foo())->thenReturn(0);
-        Phockito::when($mock->Foo())->thenReturn(1);
-        Phockito::when($mock->Foo())->thenReturn(2);
+        Phockito::when($mock)->Foo()->thenReturn(0);
+        Phockito::when($mock)->Foo()->thenReturn(1);
+        Phockito::when($mock)->Foo()->thenReturn(2);
 
         $this->assertEquals(2, $mock->Foo());
         $this->assertEquals(2, $mock->Foo());
@@ -209,24 +202,7 @@ class PhockitoTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals(2, $mock->Foo());
     }
 
-    /**
-     * These 2 test cases demonstrates a defect in the framework when using the "standard" API.
-     * If the behavior for a method is set to return a mock, it is not possible to change that behavior with the standard
-     * API. It is possible with the alternate API though, see other test case.
-     */
-    /**
-     * @expectedException PHPUnit_Framework_Error
-     * @expectedExceptionCode E_USER_ERROR
-     */
-    function testCanNotOverWriteReturnValueOfFunctionThatReturnsAMock() {
-        $mock = Phockito::mock('PhockitoTest_MockInterface');
-        $otherMock = Phockito::mock('PhockitoTest_MockInterface');
-
-        Phockito::when($mock->Foo())->thenReturn($otherMock);
-        Phockito::when($mock->Foo())->thenReturn(4711);
-    }
-
-    function testCanOverWriteReturnValueOfFunctionReturningAMockWithAlternateAPI() {
+    function testCanOverWriteReturnValueOfFunctionReturningAMockWith() {
         $mock = Phockito::mock('PhockitoTest_MockInterface');
         $returnedMoc = Phockito::mock('PhockitoTest_MockInterface');
 
@@ -239,7 +215,7 @@ class PhockitoTest extends PHPUnit_Framework_TestCase {
     function testNoSpecForOptionalArgumentMatchesDefault() {
 		$mock = Phockito::mock('PhockitoTest_FooHasIntegerDefaultArgument');
 		
-		Phockito::when($mock->Foo())->return(1);
+		Phockito::when($mock)->Foo()->return(1);
 		$this->assertEquals($mock->Foo(), 1);
 		$this->assertEquals($mock->Foo(1), 1);
 		$this->assertNull($mock->Foo(2), 1);
@@ -248,7 +224,7 @@ class PhockitoTest extends PHPUnit_Framework_TestCase {
 	function testSpecForOptionalArgumentDoesntAlsoMatchDefault() {
 		$mock = Phockito::mock('PhockitoTest_FooHasIntegerDefaultArgument');
 
-		Phockito::when($mock->Foo(2))->return(1);
+		Phockito::when($mock)->Foo(2)->return(1);
 		$this->assertNull($mock->Foo());
 		$this->assertNull($mock->Foo(1));
 		$this->assertEquals($mock->Foo(2), 1);
@@ -259,7 +235,7 @@ class PhockitoTest extends PHPUnit_Framework_TestCase {
 	function testCanSpecifyThrowResponse() {
 		$mock = Phockito::mock('PhockitoTest_MockMe');
 
-		Phockito::when($mock->Foo())->throw('PhockitoTest_StubResponse');
+		Phockito::when($mock)->Foo()->throw('PhockitoTest_StubResponse');
 		$mock->Foo();
 	}
 
@@ -268,7 +244,7 @@ class PhockitoTest extends PHPUnit_Framework_TestCase {
 	function testCanSpecifyThrowInstanceResponse() {
 		$mock = Phockito::mock('PhockitoTest_MockMe');
 
-		Phockito::when($mock->Foo())->throw(new PhockitoTest_StubResponse());
+		Phockito::when($mock)->Foo()->throw(new PhockitoTest_StubResponse());
 		$mock->Foo();
 	}
 
@@ -279,7 +255,7 @@ class PhockitoTest extends PHPUnit_Framework_TestCase {
 	function testCanSpecifyCallbackResponse() {
 		$mock = Phockito::mock('PhockitoTest_MockMe');
 
-		Phockito::when($mock->Foo())->callback(array($this, '_testCanSpecifyCallbackResponse_callback'));
+		Phockito::when($mock)->Foo()->callback(array($this, '_testCanSpecifyCallbackResponse_callback'));
 		$this->assertEquals($mock->Foo(), 'Foo');
 	}
 
@@ -288,7 +264,7 @@ class PhockitoTest extends PHPUnit_Framework_TestCase {
 	function testCanSpecifySequenceOfValuesAndExceptionsAsResponse() {
 		$mock = Phockito::mock('PhockitoTest_MockMe');
 
-		Phockito::when($mock->Foo())->return(1)->then(2)->thenThrow('PhockitoTest_StubResponse');
+		Phockito::when($mock)->Foo()->return(1)->then(2)->thenThrow('PhockitoTest_StubResponse');
 		$this->assertEquals($mock->Foo(), 1);
 		$this->assertEquals($mock->Foo(), 2);
 		$mock->Foo();
@@ -300,7 +276,7 @@ class PhockitoTest extends PHPUnit_Framework_TestCase {
      */
     function testCannotMockNonExistingMethod() {
         $mock = Phockito::mock('PhockitoTest_MockMe');
-        Phockito::when($mock->NonExistingMethod())->return(4711);
+        Phockito::when($mock)->NonExistingMethod()->return(4711);
     }
 
     /**
@@ -329,7 +305,7 @@ class PhockitoTest extends PHPUnit_Framework_TestCase {
 	 */
 	function testCannotUseThenWithoutAPreviousAction() {
 		$mock = Phockito::mock('PhockitoTest_MockMe');
-		Phockito::when($mock->Foo())->then(1);
+		Phockito::when($mock)->Foo()->then(1);
 	}
 
 	/**
@@ -339,7 +315,7 @@ class PhockitoTest extends PHPUnit_Framework_TestCase {
 	 */
 	function testUnknownStubbingActionThrowsAnError() {
 		$mock = Phockito::mock('PhockitoTest_MockMe');
-		Phockito::when($mock->Foo())->thenDoSomethingUndefined(1);
+		Phockito::when($mock)->Foo()->thenDoSomethingUndefined(1);
 	}
 
 	/**
@@ -349,7 +325,7 @@ class PhockitoTest extends PHPUnit_Framework_TestCase {
 	 */
 	function testProvidingTooFewArgumentsToStubbingActionThrowsAnError() {
 		$mock = Phockito::mock('PhockitoTest_MockMe');
-		Phockito::when($mock->Foo())->return();
+		Phockito::when($mock)->Foo()->return();
 	}
 
 	/**
@@ -359,14 +335,14 @@ class PhockitoTest extends PHPUnit_Framework_TestCase {
 	 */
 	function testProvidingTooManyArgumentsToStubbingActionThrowsAnError() {
 		$mock = Phockito::mock('PhockitoTest_MockMe');
-		Phockito::when($mock->Foo())->return(1, 2);
+		Phockito::when($mock)->Foo()->return(1, 2);
 	}
 
 	function testCanSpecifyReturnValueForReferenceNoInterfaceImplemented() {
 		//this call will succeed even if the derived type's method doesn't also return by ref
 		//If the return by ref doesn't come from an interface derived types can override it
 		$mock = Phockito::mock('PhockitoTest_FooReturnsByReference_NoImplements');
-		Phockito::when($mock->Foo())->return(4);
+		Phockito::when($mock)->Foo()->return(4);
 		$res = &$mock->Foo();
 		$this->assertEquals(4, $res);
 
@@ -377,7 +353,7 @@ class PhockitoTest extends PHPUnit_Framework_TestCase {
 		//This is because it's defined like this in the interface (weird..)
 		$mock = Phockito::mock('PhockitoTest_FooReturnsByReference_Implements');
 		$obj = new PhockitoTest_MockMe();
-		Phockito::when($mock->Foo())->return($obj);
+		Phockito::when($mock)->Foo()->return($obj);
 		$res = $mock->Foo();
 		$this->assertEquals($obj, $res);
 	}
@@ -386,7 +362,7 @@ class PhockitoTest extends PHPUnit_Framework_TestCase {
 		//this call will fatal error if the derived type's method doesn't also return by ref
 		//This is because it's defined like this in the interface (weird..)
 		$mock = Phockito::mock('PhockitoTest_FooReturnsByReference_Implements');
-		Phockito::when($mock->Foo())->return(4);
+		Phockito::when($mock)->Foo()->return(4);
 		$res = &$mock->Foo();
 		$this->assertEquals(4, $res);
 	}
@@ -397,7 +373,7 @@ class PhockitoTest extends PHPUnit_Framework_TestCase {
 		$mock = Phockito::mock('PhockitoTest_FooReturnsByReference_Implements');
 		$obj = new stdClass();
 
-		Phockito::when($mock->Foo())->return($obj);
+		Phockito::when($mock)->Foo()->return($obj);
 		$res = &$mock->Foo();
 		$this->assertEquals($obj, $res);
 	}

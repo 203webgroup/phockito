@@ -19,7 +19,7 @@ class PhockitoToStringTest extends PHPUnit_Framework_TestCase {
 
 		$this->assertEquals('', ''.$mock);
 
-		Phockito::when($mock->__toString())->return('NewReturnValue');
+		Phockito::when($mock)->__toString()->return('NewReturnValue');
 		$this->assertEquals('NewReturnValue', ''.$mock);
 	}
 
@@ -28,7 +28,7 @@ class PhockitoToStringTest extends PHPUnit_Framework_TestCase {
 
 		$this->assertEquals('Foo', ''.$mock);
 
-		Phockito::when($mock->__toString())->return('NewReturnValue');
+		Phockito::when($mock)->__toString()->return('NewReturnValue');
 		$this->assertEquals('NewReturnValue', ''.$mock);
 	}
 }

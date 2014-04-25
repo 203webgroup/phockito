@@ -33,20 +33,13 @@ otherwise just throws an `Exception`
 $iterator = Phockito::mock('ArrayIterator');
 
 // Stub in a value
-Phockito::when($iterator->offsetGet(0))->return('first');
+Phockito::when($iterator)->offsetGet(0)->return('first');
 
 // Prints "first"
 print_r($iterator->offsetGet(0));
 
 // Prints null, because get(999) not stubbed
 print_r($iterator->offsetGet(999));
-```
-
-Alternative API, jsMockito style
-
-```php
-// Stub in a value
-Phockito::when($iterator)->offsetGet(0)->return('first');
 ```
 
 ## Spies
@@ -121,10 +114,23 @@ Some common Hamcrest matchers:
 
 ## Differences from Mockito
 
+## Mocking style
+The original Phockito (hafriedlander/phockito) supported two mocking styles: mockito style and jsMockito style. There
+are a number of cases that the mockito style does not support, so it has been removed in this fork.
+
+The original mockito style (that has been removed)
+```php
+when($mock->foo())->return(10)
+```
+jsMockito style
+```php
+when($mock)->foo()->return(10)
+```
+
 #### Stubbing methods more flexible
 
 In Mockito, the methods when building a stub are limited to thenReturns, thenThrows. In Phockito, you can use any method
-as long as it has 'return' or 'throw' in it, so `Phockito::when(...)->return(1)->thenReturn(2)` is fine.
+as long as it has 'return' or 'throw' in it, so `Phockito::when(...)->foo()->return(1)->thenReturn(2)` is fine.
 
 #### Type-safe argument matching
 
@@ -142,9 +148,6 @@ $stub = Phockito::mock('A');
 $b = new B();
 Phockito::when($stub)->Foo(argOfTypeThat('B', is(equalTo($b))))->return('Zap');
 ```
-
-It's also possible to pass a mock to 'when', rather than the result of a method call on a mock, e.g.
-`Phockito::when($mock)->methodToStub(...)->thenReturn(...)`. This side-steps the type system entirely.
 
 Note that `argOfTypeThat` is only compatible with object type-hints; arguments with `array` or `callable` type-hints
 cannot be handled in a type-safe way.
@@ -176,7 +179,7 @@ class Foo {
 $mock = Phockito::mock('Foo');
 
 // Set up a stub
-Phockito::when($mock->Bar(1))->return('A');
+Phockito::when($mock)->Bar(1)->return('A');
 
 $mock->Bar(1); // Returns 'A'
 $mock->Bar(1, 2); // Also returns 'A'

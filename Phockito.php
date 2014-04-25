@@ -465,14 +465,8 @@ EOT;
 	 * @static
 	 * @return Phockito_WhenBuilder
 	 */
-	static function when($arg = null) {
-		if ($arg instanceof Phockito_MockMarker) {
-            return new Phockito_WhenBuilder($arg->__phockito_instanceid, $arg->__phockito_class);
-		}
-		else {
-			$method = array_shift(self::$_call_list);
-            return new Phockito_WhenBuilder($method['instance'], $method['class'], $method['method'], $method['args']);
-		}
+	static function when(Phockito_MockMarker $arg) {
+        return new Phockito_WhenBuilder($arg->__phockito_instanceid, $arg->__phockito_class);
 	}
 
 	/**

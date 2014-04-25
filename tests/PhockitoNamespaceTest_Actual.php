@@ -61,7 +61,7 @@ namespace {
 
 			$this->assertNull($mock->Foo());
 
-			Phockito::when($mock->Foo())->return('Bar');
+			Phockito::when($mock)->Foo()->return('Bar');
 			$this->assertEquals($mock->Foo(), 'Bar');
 		}
 
@@ -71,7 +71,7 @@ namespace {
 
 			$this->assertNull($mock->Foo($arg));
 
-			Phockito::when($mock->Foo($arg))->return('Bar');
+			Phockito::when($mock)->Foo($arg)->return('Bar');
 			$this->assertEquals($mock->Foo($arg), 'Bar');
 		}
 
@@ -81,7 +81,7 @@ namespace {
 
 			$this->assertNull($mock->Foo($arg));
 
-			Phockito::when($mock->Foo($arg))->return('Bar');
+			Phockito::when($mock)->Foo($arg)->return('Bar');
 			$this->assertEquals($mock->Foo($arg), 'Bar');
 		}
 
@@ -91,7 +91,7 @@ namespace {
 
 			$this->assertNull($mock->Foo($arg));
 
-			Phockito::when($mock->Foo($arg))->return('Bar');
+			Phockito::when($mock)->Foo($arg)->return('Bar');
 			$this->assertEquals($mock->Foo($arg), 'Bar');
 		}
 

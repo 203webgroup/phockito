@@ -29,7 +29,7 @@ class PhockitoGlobalsTest extends PHPUnit_Framework_TestCase {
 	function testCanStub() {
 		$mock = mock('PhockitoGlobalsTest_MockMe');
 
-		when($mock->Foo())->return(1);
+		when($mock)->Foo()->return(1);
 		$this->assertEquals($mock->Foo(), 1);
 	}
 

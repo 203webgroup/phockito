@@ -114,7 +114,7 @@ Some common Hamcrest matchers:
 
 ## Differences from Mockito
 
-## Mocking style
+#### Mocking style
 The original Phockito (hafriedlander/phockito) supported two mocking styles: mockito style and jsMockito style. There
 are a number of cases that the mockito style does not support, so it has been removed in this fork.
 
